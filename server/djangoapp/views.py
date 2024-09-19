@@ -89,12 +89,23 @@ def get_cars(request):
 # # Update the `get_dealerships` view to render the index page with
 # a list of dealerships
 def get_dealerships(request, state="ALL"):
-    if(state == "ALL"):
-        endpoint - "/fetchDealers"
-    else:
-        endpoint = "/fetchDealers/"+state
-    dealerships = get_request(endpoint)
-    return JsonResponse({"status":200, "dealers":dealerships})
+    try:
+        if state == "ALL":
+            endpoint = "/fetchDealers"
+        else:
+            endpoint = f"/fetchDealers/{state}"
+        
+        dealerships = get_request(endpoint)
+        
+        # Verify that dealerships is a list or dictionary
+        if not isinstance(dealerships, (list, dict)):
+            raise ValueError("Dealerships data is not in expected format")
+        
+        return JsonResponse({"status": 200, "dealers": dealerships})
+    
+    except Exception as e:
+        logger.error(f"Error in get_dealerships: {str(e)}")
+        return JsonResponse({"status": 500, "message": "Internal Server Error"})
 
 
 
@@ -114,7 +125,7 @@ def get_dealer_reviews(request,dealer_id):
 # Create a `get_dealer_details` view to render the dealer details
 def get_dealer_details(request, dealer_id):
     if(dealer_id):
-        endpoint = '/fetchDealer'+str(dealer_id)
+        endpoint = '/fetchDealer/'+str(dealer_id)
         dealership = get_request(endpoint)
         return JsonResponse({"status":200,"dealer":dealership})
     else:
