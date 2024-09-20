@@ -11,7 +11,9 @@ logger = logging.getLogger(__name__)
 
 # Get URLs from environment variables
 backend_url = os.getenv('backend_url', 'http://localhost:3030')
-sentiment_analyzer_url = os.getenv('sentiment_analyzer_url', 'http://localhost:5050/')
+sentiment_analyzer_url = os.getenv(
+    'sentiment_analyzer_url', 'http://localhost:5050/')
+
 
 def get_request(endpoint):
     url = f"{backend_url}{endpoint}"
@@ -31,6 +33,7 @@ def get_request(endpoint):
         logger.error(f"Value error: {str(e)}")
         raise
 
+
 def analyze_review_sentiments(text):
     request_url = f"{sentiment_analyzer_url}analyze/{text}"
     logger.debug(f"Analyzing sentiment with URL: {request_url}")
@@ -45,6 +48,7 @@ def analyze_review_sentiments(text):
         logger.error(f"Value error: {str(e)}")
         return {"error": "Value error"}
 
+
 def post_review(data_dict):
     request_url = f"{backend_url}/insert_review"
     logger.debug(f"Posting review with URL: {request_url}")
@@ -58,4 +62,3 @@ def post_review(data_dict):
     except ValueError as e:
         logger.error(f"Value error: {str(e)}")
         return {"error": "Value error"}
-
