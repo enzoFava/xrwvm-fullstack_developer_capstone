@@ -20,9 +20,9 @@ def get_request(endpoint):
     logger.debug(f"Making request to URL: {url}")
     try:
         response = requests.get(url)
-        response.raise_for_status()  # Raise an error for bad HTTP responses
-        data = response.json()      # Convert the response to JSON
-        if not isinstance(data, (dict, list)):  # Ensure it's a dictionary or list
+        response.raise_for_status()
+        data = response.json()
+        if not isinstance(data, (dict, list)):
             logger.error(f"Unexpected data type: {type(data)}")
             raise ValueError("Data is not JSON serializable")
         return data
