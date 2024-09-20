@@ -39,7 +39,7 @@ jobs:
         with:
           node-version: 14
       - name: Install JSHint
-        run: npm install jshint --global
+        run: npm install jshint@2.12.0 --global
       - name: Run Linter
         run: |
           # This command finds all JavaScript files recursively and runs JSHint with inline configuration
