@@ -1,7 +1,6 @@
 # Uncomment the required imports before adding the code
 
 from django.contrib.auth.models import User
-from django.shortcuts import render
 from django.contrib.auth import logout
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate
@@ -63,7 +62,8 @@ def registration(request):
 
     if not username_exists:
         user = User.objects.create_user(
-            username=username, first_name=first_name, last_name=last_name, password=password, email=email)
+            username=username, first_name=first_name,
+            last_name=last_name, password=password, email=email)
         login(request, user)
         data = {"userName": username, "status": "Authenticated"}
         return JsonResponse(data)
@@ -105,7 +105,9 @@ def get_dealerships(request, state="ALL"):
 
     except Exception as e:
         logger.error(f"Error in get_dealerships: {str(e)}")
-        return JsonResponse({"status": 500, "message": "Internal Server Error"})
+        return JsonResponse(
+            {"status": 500, "message": "Internal Server Error"}
+        )
 
 
 # Create a `get_dealer_reviews` view to render the reviews of a dealer
@@ -141,6 +143,8 @@ def add_review(request):
             post_review(data)
             return JsonResponse({"status": 200})
         except Exception:
-            return JsonResponse({"status": 401, "message": "Error in posting review"})
+            return JsonResponse(
+                {"status": 401, "message": "Error in posting review"}
+            )
     else:
         return JsonResponse({"status": 403, "message": "Unauthorized"})
